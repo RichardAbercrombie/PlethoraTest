@@ -309,17 +309,11 @@ namespace JSonParser
                     List<double> positionEnd = getCoordinatesAt(ObjProfile, ObjProfile.Edges[i].edgedata.End);
 
                     // ... the Arc may not always be 180 degrees, so calculate the arc length
-                    double[] Vec1 = new double[3];
-                    double[] Vec2 = new double[3];
+                    double[] Vec1 = new double[3] { (positionEnd[0] - ObjProfile.Edges[i].edgedata.CenterX), 
+                        (positionEnd[1] - ObjProfile.Edges[i].edgedata.CenterY), 0.0 };
 
-                    // ... set Vector1
-                    Vec1[0] = positionEnd[0] - ObjProfile.Edges[i].edgedata.CenterX;
-                    Vec1[1] = positionEnd[1] - ObjProfile.Edges[i].edgedata.CenterY;
-
-                    // ... set Vector2
-                    Vec2[0] = positionStart[0] - ObjProfile.Edges[i].edgedata.CenterX;
-                    Vec2[1] = positionStart[1] - ObjProfile.Edges[i].edgedata.CenterY;
-                    Vec1[2] = Vec2[2] = 0.0;
+                    double[] Vec2 = new double[3] { (positionStart[0] - ObjProfile.Edges[i].edgedata.CenterX), 
+                        (positionStart[1] - ObjProfile.Edges[i].edgedata.CenterY), 0.0};
 
                     // ... get the radius from this vector (before its normalize)
                     double Radius = getVectorLength(Vec1);
@@ -399,17 +393,11 @@ namespace JSonParser
                     List<double> positionEnd = getCoordinatesAt(ObjProfile, ObjProfile.Edges[i].edgedata.End);
 
                     // ... the Arc may not always be 180 degrees, so calculate the arc length
-                    double[] Vec1 = new double[3];
-                    double[] Vec2 = new double[3];
+                    double[] Vec1 = new double[3] { (positionEnd[0] - ObjProfile.Edges[i].edgedata.CenterX), 
+                        (positionEnd[1] - ObjProfile.Edges[i].edgedata.CenterY), 0.0 };
 
-                    // ... set Vector1
-                    Vec1[0] = positionEnd[0] - ObjProfile.Edges[i].edgedata.CenterX;
-                    Vec1[1] = positionEnd[1] - ObjProfile.Edges[i].edgedata.CenterY;
-
-                    // ... set Vector2
-                    Vec2[0] = positionStart[0] - ObjProfile.Edges[i].edgedata.CenterX;
-                    Vec2[1] = positionStart[1] - ObjProfile.Edges[i].edgedata.CenterY;
-                    Vec1[2] = Vec2[2] = 0.0;
+                    double[] Vec2 = new double[3] { (positionStart[0] - ObjProfile.Edges[i].edgedata.CenterX), 
+                        (positionStart[1] - ObjProfile.Edges[i].edgedata.CenterY), 0.0 };
 
                     // ... normilize the vectors
                     Vec1 = Normalize(Vec1);  Vec2 = Normalize(Vec2);
@@ -421,20 +409,13 @@ namespace JSonParser
                     List<double> clockWiseFrom = getCoordinatesAt(ObjProfile, ObjProfile.Edges[i].edgedata.ClockWiseFrom);
 
                     // ... convert the clockWiseFrom
-                    double[] p = new double[3];
-                    p[0] = clockWiseFrom[0];
-                    p[1] = clockWiseFrom[1];
-                    p[2] = 0.0;
+                    double[] p = new double[3] { clockWiseFrom[0], clockWiseFrom[1], 0.0 };
 
                     // ... center point to rotate about
-                    double[] p2 = new double[3];
-                    p2[0] = ObjProfile.Edges[i].edgedata.CenterX;
-                    p2[1] = ObjProfile.Edges[i].edgedata.CenterY;
-                    p2[2] = 0.0;
+                    double[] p2 = new double[3] { ObjProfile.Edges[i].edgedata.CenterX, ObjProfile.Edges[i].edgedata.CenterY, 0.0 };
 
                     // ... rotate point p about the Z-Axis relative to the midpoint of the arc
-                    double[] rotationPoint = new double[3];
-                    rotationPoint = rotateAboutZ_Axis(p, (angle * 0.5), p2);
+                    double[] rotationPoint = rotateAboutZ_Axis(p, (angle * 0.5), p2);
 
                     // ... convert to the PointF type
                     PointF pt = new PointF((float)rotationPoint[0], (float)rotationPoint[1]);
@@ -495,9 +476,7 @@ namespace JSonParser
             }
 
             // ... calculate the final size of the object
-            double[] finalSize = new double[2];
-            finalSize[0] = high[0] - low[0];
-            finalSize[1] = high[1] - low[1];
+            double[] finalSize = new double[2] { (high[0] - low[0]), (high[1] - low[1]) };
 
             // ... return the value
             return finalSize;
@@ -566,7 +545,6 @@ namespace JSonParser
         /// <param name="fileName"></param>
         public ParseFile(string fileName)
         {
-
             // ... read the file
             using (StreamReader r = new StreamReader(fileName))
             {
@@ -610,6 +588,7 @@ namespace JSonParser
                     }
                 }
 
+
                 // ... loop through all Edges and save CircularArc's to the ObjectProfile
                 XmlNodeList nodes1 = doc.DocumentElement.SelectNodes("//root//Edges");
                 XmlNodeList lType = nodes1[0].SelectNodes("//Type");
@@ -648,6 +627,8 @@ namespace JSonParser
                     ObjProfile.Edges.Add(ObjId);
                 }
 
+
+
                 // ... keep track of our position
                 int currPosition = 0;
 
@@ -675,6 +656,7 @@ namespace JSonParser
                 }
 
 
+
                 // ... container to hold the vertex ID's
                 Vertex_IDs = new List<int>();
 
@@ -696,6 +678,8 @@ namespace JSonParser
                         }
                     }
                 }
+
+
 
                 // ... store the Vertices Position X and Y values in the ObjectProfile
                 XmlNodeList nodes3 = doc.DocumentElement.SelectNodes("//root//Vertices//Position");

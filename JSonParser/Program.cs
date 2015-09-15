@@ -35,7 +35,7 @@ namespace JSonParser
                 string fileName = Console.ReadLine();
 
                 // ... check that the file path is valid
-                if (File.Exists(fileName))
+                if (File.Exists(fileName.ToLower()))
                 {
                     // ... parse the file
                     ParseFile jsonReader = new ParseFile(fileName);
@@ -50,7 +50,7 @@ namespace JSonParser
                     Cost += jsonReader.getMaterialCost(jsonReader.ObjProfile);
 
                     // ... print the final cost
-                    Console.WriteLine("Cost to produce part: ${0}", Cost);
+                    Console.WriteLine("Cost to produce part: '${0} dollars'", Cost);
                     Console.WriteLine();
 
                     // ... print exit method to screen
